@@ -31,6 +31,7 @@ class issue:
           """)
         
         while True:
+            
             try:
                 print("Enter Your choice:-")
                 user = int(input(">> "))
@@ -43,17 +44,29 @@ class issue:
                     q.remove_ticket()
                 
                 elif user == 3:
-                    pass
+                    q.show_ticket()
+                    
 
                 elif user == 4:
-                    pass
+                    q.urgent_ticket()
+                    
 
                 elif user == 5:
-                    pass
+                    break
                 
                 else:
                     print(f"Invalid Data Entered {user}\n")
-                    
+                
+                print("\nExit for 1 // New for 0")
+                
+                choice = int(input(">>")) 
+                
+                if choice == 1:
+                    break
+                
+                q.main()
+                
+                                        
             except(ValueError):
                 print(f"Invalid Date Entered {user}\n")
         
@@ -106,9 +119,20 @@ class issue:
         desp = input(">>")
             
         q.push(id,curr_time,name,desp) 
-        q.traverse()
-        q.main()
         
+        print("Inventory for 1 // New Ticket for 0\n")
+        while True:
+                
+            dec = int(input(">>"))
+            
+            if dec == 1:
+                q.main()
+            
+            elif (dec == 0):
+                q.generate_ticket()
+            else:
+                print("\nPlease Enter valid details!!!")
+                
         
         
         
@@ -120,6 +144,49 @@ class issue:
         
         print(f"Id: {self.front.issue_id} Name:{self.front.name} Time: {self.front.date_time}")
         q.pop()        
+        
+        
+        
+        
+        
+    def urgent_ticket(self):
+        
+        if self.front == None:
+            print("List is Empty")
+            return None
+        
+        print("Enter Customer Name")
+        while True:        
+
+            cust_name = input(">>").capitalize()
+            
+            if not cust_name.isalpha():
+                print("Please Enter valid Details")
+                
+            else:
+                curr = self.front
+                while curr!=None:
+                    
+                    if curr.name != cust_name:
+                        print("Not Found, Enter Valid Name")
+                        print(curr.name)
+                        break
+                        
+                    else:
+                        
+                        print("found it")
+                        print("Name is ",)
+                        
+                    curr = curr.next    
+                          
+                
+            
+                
+                
+            
+            
+            
+            
             
         
         
@@ -184,19 +251,19 @@ class issue:
         
         
         
-    def traverse(self):
+    def show_ticket(self):
         if self.is_empty():
             print("Issues List Empty")
             return None
-        
-        table = PrettyTable(["S_No","id","date","Name","Desp"])
+        status = "Pending"
+        table = PrettyTable(["S_No","id","date","Name","Desp","Status"])
         count = 0
         
         curr = self.front
         
         while curr!=None:
             count+=1
-            table.add_row([count,curr.issue_id,curr.date_time,curr.name,curr.issue_desp])
+            table.add_row([count,curr.issue_id,curr.date_time,curr.name,curr.issue_desp,status])
 
             curr = curr.next
             
@@ -204,13 +271,13 @@ class issue:
         
             
             
+            
+ 
+ 
+            
+            
 q = issue()
 q.main()
-q.push(1123,12354,"Pushar","ROg")
-q.push(1124,12354,"Pushar","ROg")
-q.pop()
-q.push(1125,12354,"Pushar","ROg")
-q.push(1123,12354,"Pushar","ROg")
-# q.traverse()
+
         
             
