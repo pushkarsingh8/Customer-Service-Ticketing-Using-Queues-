@@ -1,6 +1,7 @@
 #Customer Service Ticketing Sytem (Using Queue):-
 from prettytable import PrettyTable 
 from datetime import datetime
+import time
 import random
 
 class Node:
@@ -14,11 +15,63 @@ class Node:
         
             
 class issue:
+
     def __init__(self):
         self.front = None
         self.rear = None
         self.size = 0
         
+        
+            
+    def is_empty(self):
+        #checks queue is empty or not
+        return self.front == None
+    
+    
+    def len(self):
+        #it's return only size of queues
+        return self.size
+    
+    
+    
+    
+    def push(self,id,date_time,name,desp):
+        #inserting a node in a queue
+        
+        new_node = Node(id,date_time,name,desp) 
+        
+ 
+        
+        if self.front == None:
+            self.front = new_node
+            self.rear = new_node
+
+            
+        else:
+            self.rear.next = new_node
+            self.rear = new_node
+        
+        self.size += 1
+            
+            
+    
+            
+    def pop(self):
+        #delete a node in a queue
+        if self.is_empty():
+            print("Empty List")
+            return None
+        
+        if self.front == None:
+            self.rear = None
+            self.size -= 1
+            
+        self.front = self.front.next
+        self.size -= 1
+        
+        
+        
+    
     
     def main(self):
         #it show first On Terminal
@@ -72,21 +125,6 @@ class issue:
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    def is_empty(self):
-        return self.front == None
-    
-    def len(self):
-        return self.size
     
     
     
@@ -138,11 +176,25 @@ class issue:
         
     
     def remove_ticket(self):
+        #it's directly delete a ticket on based of Old 
         if self.is_empty():
             print("List is Empty")
             return None
         
-        print(f"Id: {self.front.issue_id} Name:{self.front.name} Time: {self.front.date_time}")
+        print(f"Id: {self.front.issue_id} Name:{self.front.name} Time: {self.front.date_time}\n")
+        count = 3
+        print("Processing ",end="")
+        while count !=1:
+            
+            print(".",end="",flush=True)
+            time.sleep(1)
+            print(".",end="",flush=True)
+            time.sleep(0.5)
+            print(".",end="",flush=True)
+            count -= 1 
+            
+        print("\nDeleted")
+            
         q.pop()        
         
         
@@ -151,7 +203,7 @@ class issue:
         
     def urgent_ticket(self):
         
-        if self.front == None:
+        if self.is_empty():
             print("List is Empty")
             return None
         
@@ -216,39 +268,6 @@ class issue:
     
     
     
-    def push(self,id,date_time,name,desp):
-        
-        new_node = Node(id,date_time,name,desp) 
-        
- 
-        
-        if self.front == None:
-            self.front = new_node
-            self.rear = new_node
-
-            
-        else:
-            self.rear.next = new_node
-            self.rear = new_node
-        
-        self.size += 1
-            
-            
-            
-    def pop(self):
-        if self.is_empty():
-            print("Empty List")
-            return None
-        
-        if self.front == None:
-            self.rear = None
-            self.size -= 1
-            
-        self.front = self.front.next
-        self.size -= 1
-        
-        
-        
         
         
     def show_ticket(self):
