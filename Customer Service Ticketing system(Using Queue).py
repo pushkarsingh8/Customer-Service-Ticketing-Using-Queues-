@@ -61,13 +61,13 @@ class issue:
         if self.is_empty():
             print("Empty List")
             return None
+        self.front = self.front.next
         
         if self.front == None:
             self.rear = None
-            self.size -= 1
             
-        self.front = self.front.next
         self.size -= 1
+            
         
         
         
@@ -75,53 +75,39 @@ class issue:
     
     def main(self):
         #it show first On Terminal
-        print(
+        
+        
+        while True:
+            print(
            """\n\t\t*Customer Services Ticketing System*\n\n1.Generate New Ticket
               \n2.Remove and Process a Ticket
               \n3.Pending Tickets Show
               \n4.Mark Ticket as Urgent
               \n5.Exit
           """)
-        
-        while True:
+
             
             try:
-                print("Enter Your choice:-")
+                print("\nEnter Your choice:-")
                 user = int(input(">> "))
 
                 if user == 1:
-                    q.generate_ticket()
-                    break
-                
+                    q.generate_ticket()                
                 elif user == 2:
                     q.remove_ticket()
-                
                 elif user == 3:
                     q.show_ticket()
-                    
-
                 elif user == 4:
                     q.urgent_ticket()
-                    
-
                 elif user == 5:
+                    print("Goodbye!")
                     break
                 
                 else:
-                    print(f"Invalid Data Entered {user}\n")
-                
-                print("\nExit for 1 // New for 0")
-                
-                choice = int(input(">>")) 
-                
-                if choice == 1:
-                    break
-                
-                q.main()
-                
+                    print("Please Enter valid choice(1-5).")
                                         
-            except(ValueError):
-                print(f"Invalid Date Entered {user}\n")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         
         
         
@@ -135,42 +121,51 @@ class issue:
         id = random.randint(1100,1500)
         
         #ticket raise date & time always mention
-        curr_time = datetime.now()
-        curr_time = curr_time.strftime("%Y-%m-%d %H:%M")
+        curr_time = datetime.now().strftime("%Y-%m-%d %H:%M")
         
         while True:
                 
-            print("Enter Your Name")
+            print("\nEnter Your Name")
             name = input(">>").capitalize()
             
             if name.isalpha():
                 break
             
-            elif len(name) < 2:
-                print("Please Enter Only Name\n")
-            
             else:
-                print("Only Enter valid Statements!!!")
+                print("Please Enter a Valid Name (at least 1 characters)")
                 
-        print("Write Down Details what issue?")
+                
+        print("Write Down Details of the issue:")
                 
         desp = input(">>")
             
-        q.push(id,curr_time,name,desp) 
+        self.push(id,curr_time,name,desp) 
+        print("Tickets generated successfully")
         
-        print("Inventory for 1 // New Ticket for 0\n")
+        
         while True:
                 
-            dec = int(input(">>"))
-            
-            if dec == 1:
-                q.main()
-            
-            elif (dec == 0):
-                q.generate_ticket()
-            else:
-                print("\nPlease Enter valid details!!!")
+            print("Going to Inventory for (1) // New Ticket for (0)\n")
+            try:
+                dec = int(input(">>"))
                 
+                if dec == 1:
+                    self.main()
+                    break
+                
+                elif (dec == 0):
+                    q.generate_ticket()
+                    break
+                else:
+                    print("Please Enter 1 or 0")
+            
+            except ValueError:
+                print("Invalid input. Please enter a number")
+                        
+                
+        
+        
+        
         
         
         
@@ -179,6 +174,7 @@ class issue:
         #it's directly delete a ticket on based of Old 
         if self.is_empty():
             print("List is Empty")
+            q.main()
             return None
         
         print(f"Id: {self.front.issue_id} Name:{self.front.name} Time: {self.front.date_time}\n")
@@ -195,8 +191,20 @@ class issue:
             
         print("\nDeleted")
             
-        q.pop()        
+        q.pop()
         
+        print("Going to Inventory for (1) // New Ticket for (0)\n")
+        while True:
+                
+            dec = int(input(">>"))
+            
+            if dec == 1:
+                q.main()
+            
+            elif (dec == 0):
+                q.generate_ticket()
+            else:
+                print("\nPlease Enter valid details!!!")        
         
         
         
@@ -208,72 +216,55 @@ class issue:
             return None
         
         print("Enter Customer Name")
-        while True:        
-
-            cust_name = input(">>").capitalize()
+        cust_name = input(">>").capitalize()
+        
             
-            if not cust_name.isalpha():
-                print("Please Enter valid Details")
+        if not cust_name.isalpha():
+            print("Please Enter valid Details")
+            return
+        
+        if self.front.name == cust_name:
+            print("Ticket is already at the front")
                 
-            else:
-                curr = self.front
-                while curr!=None:
+            
+        curr = self.front
+        prev = None
+                
+        while curr!=None:
+             
+            if curr.name == cust_name:
+                if prev is not None:
+                    prev.next = curr.next
+                        
+                else:
+                    self.front = curr.next
                     
-                    if curr.name != cust_name:
-                        print("Not Found, Enter Valid Name")
-                        print(curr.name)
-                        break
-                        
-                    else:
-                        
-                        print("found it")
-                        print("Name is ",)
-                        
-                    curr = curr.next    
+                
+                curr.next = self.front
+                self.front = curr
+                
+                print("Ticket marked as urgent and moved to the front")
+                return
+            
+            
+            prev = curr
+            curr = curr.next
+            
+        print("Ticket not found.")
+            
+                    
+                    
+                    
                           
-                
-            
-                
-                
-            
-            
-            
-            
-            
-        
-        
-        
-        
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-        
+                          
+                          
+                          
+                          
     def show_ticket(self):
         if self.is_empty():
-            print("Issues List Empty")
-            return None
+            print("No pending tickets")
+            return 
+        
         status = "Pending"
         table = PrettyTable(["S_No","id","date","Name","Desp","Status"])
         count = 0
@@ -287,10 +278,37 @@ class issue:
             curr = curr.next
             
         print(table)
+    
+                
+            
+                
+                
+            
+            
+            
+            
+            
         
-            
-            
-            
+        
+        
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       
  
  
             
